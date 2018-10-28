@@ -1,0 +1,65 @@
+---
+title: "homework1_movie_scoring"
+author: "jim_song 宋晉德 台北大學 碩二"
+date: "2018年10月29日"
+output: html_document
+---
+
+## The Library
+
+ggplot2movies is the data of the movies scoring . ggplot2 is the graph tool. dplyr is calculation tool.
+
+```{r lib}
+  library(ggplot2movies)
+  library(ggplot2)
+  library(dplyr)
+```
+
+## Initialize The Class
+
+In first , we should build the 25nd column to call "class". And there is empty string data.
+
+```{r initialize}
+m <- movies
+m[,25]=""
+colnames(m)[25] <- "class"
+```
+
+## Fill In The Class And Get The Head
+
+We check the column from "Short" to "Action". If we get 1 , we will fill in the column . If we get lots of 1 , we will fill in the column that is first condition to get 1.
+If we get no 1 , we won't fill anything.
+
+```{r fill}
+for(i in 1:nrow(m)){
+  if(m[i,"Short"]==1){
+    m[i,"class"]="Short"
+  }else if(m[i,"Romance"]==1){
+    m[i,"class"]="Romance"
+  }else if(m[i,"Documentary"]==1){
+    m[i,"class"]="Documentary"
+  }else if(m[i,"Drama"]==1){
+    m[i,"class"]="Drama"
+  }else if(m[i,"Comedy"]==1){
+    m[i,"class"]="Comedy"
+  }else if(m[i,"Animation"]==1){
+    m[i,"class"]="Animation"
+  }else if(m[i,"Action"]==1){
+    m[i,"class"]="Action"
+  } 
+} 
+options(dplyr.width = Inf)
+head(m)
+```
+
+##Graph The Class Using Bar
+
+```{r bar}
+ggplot(m,aes(class))+geom_bar()
+```
+
+##Summarise The Class Using Median
+
+```{r summarise}
+summarise(group_by(m,class),median(rating))
+```
