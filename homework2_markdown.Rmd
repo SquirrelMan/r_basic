@@ -1,0 +1,50 @@
+---
+title: "homework2.markdown"
+author: "jim_song"
+date: "2018年12月27日"
+output: html_document
+---
+
+## Library
+rvest is to scrap the data on the Net. dplyr is to use "%>%".
+
+```{r}
+  library(rvest)
+  library(dplyr)
+```
+
+## Url
+scrap ltn news.
+
+```{r}
+  newsurl <- "http://news.ltn.com.tw/list/breakingnews"
+  ltn <- read_html(newsurl, encoding="UTF-8")
+```
+
+## Scrap the data title , link , time
+use html_nodes to search useful data on the website .
+
+```{r}
+  ltn %>% html_nodes('ul.list') %>% html_nodes('a.tit') 
+  data_ltn <- ltn %>% html_nodes('ul.list') %>% html_nodes('a.tit') 
+  
+  title_ltn <- data_ltn %>% html_attr('data-desc') %>% iconv(from='UTF-8', to='UTF-8')
+  
+  time_ltn <- data_ltn %>% html_nodes('span') %>% html_text() %>% iconv(from='UTF-8', to='UTF-8')
+  
+  tmp_time_ltn <- c()
+  for(i in 1:length(time_ltn)){
+    if(nchar(time_ltn[i])==5)
+      tmp_time_ltn <- c(tmp_time_ltn,time_ltn[i])
+  }
+  time_ltn <- tmp_time_ltn
+  
+  link_ltn <- data_ltn %>% html_attr('href') %>% iconv(from='UTF-8', to='UTF-8')
+```
+
+## View the dataframe
+
+```{r}
+  ltnnews <- data.frame(time =time_ltn, title= title_ltn, link= link_ltn)
+  head(ltnnews,length(time_ltn))
+```
