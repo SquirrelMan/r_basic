@@ -1,4 +1,6 @@
 # r_basic
+證基會 台北大學 資工碩二 宋晉德 學生
+
 homework1:
 https://squirrelman.github.io/r_basic/homework1_markdown.html
 
